@@ -36,32 +36,23 @@
     <label>Input:</label>
     <textarea id="input" placeholder="Enter text here..."></textarea>
 
-    <button onclick="verarbeiten()">Extract & Sort</button>
+    <button onclick="process()">Extract & Sort</button>
 
     <h3>Parsed:</h3>
     <textarea id="output" readonly></textarea>
 
     <script>
-        function verarbeiten() {
+        function process() {
             const text = document.getElementById('input').value;
 
-            // Findet #123, #42 usw.
             const matches = text.match(/#\d+/g) || [];
 
-            // Nummern extrahieren und sortieren
-            const sortiert = matches
-                .map(item => ({
-                    original: item,
-                    nummer: parseInt(item.substring(1), 10)
-                }))
-                .sort((a, b) => a.nummer - b.nummer);
-
-            // Ausgabe erzeugen
-            const ausgabe = sortiert
-                .map(item => `- [ ] ${item.original}`)
+            const output = [...new Set(matches)]
+                .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))
+                .map(item => `- [ ] ${item}`)
                 .join('\n');
 
-            document.getElementById('output').value = ausgabe;
+            document.getElementById('output').value = output;
         }
     </script>
 
