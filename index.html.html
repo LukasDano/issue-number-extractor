@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title># Nummern extrahieren</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #output {
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Text mit #Nummern verarbeiten</h2>
+
+    <label>Eingabe:</label>
+    <textarea id="input" placeholder="Text hier einfügen..."></textarea>
+
+    <button onclick="verarbeiten()">Extrahieren & Sortieren</button>
+
+    <h3>Ausgabe:</h3>
+    <textarea id="output" readonly></textarea>
+
+    <script>
+        function verarbeiten() {
+            const text = document.getElementById('input').value;
+
+            // Findet #123, #42 usw.
+            const matches = text.match(/#\d+/g) || [];
+
+            // Nummern extrahieren und sortieren
+            const sortiert = matches
+                .map(item => ({
+                    original: item,
+                    nummer: parseInt(item.substring(1), 10)
+                }))
+                .sort((a, b) => a.nummer - b.nummer);
+
+            // Ausgabe erzeugen
+            const ausgabe = sortiert
+                .map(item => `- [ ] ${item.original}`)
+                .join('\n');
+
+            document.getElementById('output').value = ausgabe;
+        }
+    </script>
+
+</body>
+</html>
