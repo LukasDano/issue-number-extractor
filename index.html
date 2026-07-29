@@ -37,6 +37,7 @@
     <textarea id="input" placeholder="Enter text here..."></textarea>
 
     <button onclick="process()">Extract & Sort</button>
+    <input id="check-issues" type="checkbox" checked/>
 
     <h3>Parsed:</h3>
     <textarea id="output" readonly></textarea>
@@ -44,12 +45,13 @@
     <script>
         function process() {
             const text = document.getElementById('input').value;
+            const markAsSolved = document.getElementById('check-issues').checked;
 
             const matches = text.match(/#\d+/g) || [];
 
             const output = [...new Set(matches)]
                 .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))
-                .map(item => `- [ ] ${item}`)
+                .map(item => `- [${markAsSolved ? "x": " "}] ${item}`)
                 .join('\n');
 
             document.getElementById('output').value = output;
